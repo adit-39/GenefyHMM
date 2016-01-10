@@ -1,0 +1,16 @@
+(dp0
+I8
+(lp1
+S'Prostate Cancer'
+p2
+asI57
+(lp3
+S'Breast Cancer'
+p4
+asI18
+(lp5
+S'Colorectal Cancer'
+p6
+aS'Lung Cancer'
+p7
+as.
