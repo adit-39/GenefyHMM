@@ -1,6 +1,6 @@
 '''
 	Author: Aditya Dalwani <adit.39@gmail.com>
-	Date: 8th Jabuary, 2016
+	Date: 8th January, 2016
 	Description:
 		Script performs the following:
 		1. Takes a path to a folder containing training files with name <disease_name>.soft
