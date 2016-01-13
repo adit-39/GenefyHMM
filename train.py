@@ -72,8 +72,9 @@ def vector_quantize(data_dict, vs, bins):
 		all_size_data = []
 		for disease in vs[size]:
 			all_size_data.extend(data_dict[disease])
-		whitened = sp.whiten(all_size_data)
-		codebooks[size] = sp.kmeans(whitened, bins)[0]
+		#whitened = sp.whiten(all_size_data)
+		#codebooks[size] = sp.kmeans(whitened, bins)[0]
+		codebooks[size] = sp.kmeans(np.asarray(all_size_data), bins)[0]
 	pickle.dump(codebooks,open("all_codebooks.pkl","wb"))
 	for dis in data_dict.keys():
 		n = len(data_dict[dis])
@@ -83,6 +84,7 @@ def vector_quantize(data_dict, vs, bins):
 	
 def train_HMMs(vq_dict, vs):
 	HMMs = {}
+	HMMs_save = {}
 	for disease in vq_dict.keys():
 		size = 0
 		for s in vs.keys():
@@ -91,13 +93,16 @@ def train_HMMs(vq_dict, vs):
 				break
 		HMMs[disease] = HMM("initial.json")
 		HMMs[disease].forward_backward_multi_scaled([vq_dict[disease]])
-	pickle.dump(HMMs, open("trained_HMMs.pkl","wb"))	
+		HMMs_save[disease] = {}
+		HMMs_save[disease]["A"] = HMMs[disease].A
+		HMMs_save[disease]["B"] = HMMs[disease].B
+		HMMs_save[disease]["pi"] = HMMs[disease].pi
+		
+	pickle.dump(HMMs_save, open("trained_HMMs_saved.pkl","wb"))	
 
 
 if __name__=="__main__":
 	bins = 16
 	trng, vec_sizes = obtain_training_data()
-	#print vec_sizes
 	vq_data = vector_quantize(trng, vec_sizes, bins)
-	#print vq_data
 	train_HMMs(vq_data, vec_sizes)
